@@ -4,14 +4,21 @@
 int main (int argc, const char * argv[]) {
     NSAutoreleasePool * pool = [[NSAutoreleasePool alloc] init];
 	
-	if (argc < 2) {
-		printf ("Usage: CAMetadata /full/path/to/audiofile\n");
-		return -1;
-	} // 1
 	
-	NSString *audioFilePath = [[NSString stringWithUTF8String:argv[1]]
-                                    stringByExpandingTildeInPath];	// 2
-	NSURL *audioURL = [NSURL fileURLWithPath:audioFilePath];	// 3
+    // Assuming the path is correct and the file exists at this location
+    NSString *audioFilePath = @"/Users/jaideepshah/Desktop/coreAudio/Learning-Core-Audio-Book-Code-Sample/CH01_CAMetadata/CH01_CAMetadata/stereo-test.mp3";
+
+    // Create a file URL from the path
+    NSURL *audioURL = [NSURL fileURLWithPath:audioFilePath];
+
+    // You can check if the URL was created and point to a valid file
+    if ([[NSFileManager defaultManager] fileExistsAtPath:audioFilePath]) {
+        NSLog(@"Audio file loaded successfully.");
+    } else {
+        NSLog(@"Failed to load audio file.");
+    }
+
+
 	NSLog (@"audioURL: %@", audioURL);
 	AudioFileID audioFile;	// 4
 	OSStatus theErr = noErr;	// 5

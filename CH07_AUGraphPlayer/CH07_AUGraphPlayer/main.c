@@ -1,7 +1,7 @@
 #include <AudioToolbox/AudioToolbox.h>
 #include <unistd.h> // for usleep()
 
-#define kInputFileLocation CFSTR ("/Users/abdullahbakhach/Documents/abbasWuHussein.mp3")
+#define kInputFileLocation CFSTR ("/Users/jaideepshah/Desktop/coreAudio/Learning-Core-Audio-Book-Code-Sample/CH07_AUGraphPlayer/stereo.mp3")
 // #define kInputFileLocation	CFSTR("/Volumes/Galactica/Music/Dubee - its the crest.mp3")
 // #define kInputFileLocation CFSTR("/Volumes/Sephiroth/Tunes/Amazon MP3/Metric/Fantasies/06 - Gimme Sympathy.mp3")
 
@@ -86,6 +86,7 @@ void CreateMyAUGraph(MyAUGraphPlayer *player)
 	// now initialize the graph (causes resources to be allocated)
 	CheckError(AUGraphInitialize(player->graph),
 			   "AUGraphInitialize failed");
+    CAShow(player->graph);
 }
 
 double PrepareFileAU(MyAUGraphPlayer *player)
@@ -156,7 +157,7 @@ int	main(int argc, const char *argv[])
 	
 	// build a basic fileplayer->speakers graph
 	CreateMyAUGraph(&player);
-	
+   
 	// configure the file player
 	Float64 fileDuration = PrepareFileAU(&player);
 	
@@ -164,8 +165,10 @@ int	main(int argc, const char *argv[])
 	CheckError(AUGraphStart(player.graph),
 			   "AUGraphStart failed");
 	
+   
 	// sleep until the file is finished
 	usleep ((int)(fileDuration * 1000.0 * 1000.0));
+    
 	
 cleanup:
 	AUGraphStop (player.graph);

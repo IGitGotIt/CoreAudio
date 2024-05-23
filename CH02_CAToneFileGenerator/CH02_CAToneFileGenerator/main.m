@@ -3,19 +3,16 @@
 
 #define SAMPLE_RATE 44100	// 1
 #define DURATION 5.0	// 2
-// #define FILENAME_FORMAT @"%0.3f-square.aif"
+#define FILENAME_FORMAT @"%0.3f-square.aif"
 // #define FILENAME_FORMAT @"%0.3f-saw.aif"
-#define FILENAME_FORMAT @"%0.3f-sine.aif"
+// #define FILENAME_FORMAT @"%0.3f-sine.aif"
 
 int main (int argc, const char * argv[]) {
     NSAutoreleasePool * pool = [[NSAutoreleasePool alloc] init];
 	
-	if (argc < 2) {
-		printf ("Usage: CAToneFileGenerator n\n(where n is tone in Hz)");
-		return -1;
-	} // 1
+
 	
-	double hz = atof(argv[1]);	// 2
+    double hz = 15000;	// 2
 	assert (hz > 0);
 	NSLog (@"generating %f hz tone", hz);
 	
@@ -56,7 +53,7 @@ int main (int argc, const char * argv[]) {
 	
 	while (sampleCount < maxSampleCount) {
 		for (int i=0; i<wavelengthInSamples; i++) {
-			/*
+			
 			 // square wave
 			 SInt16 sample;
 			 if (i < wavelengthInSamples/2) {
@@ -70,7 +67,7 @@ int main (int argc, const char * argv[]) {
 			 &bytesToWrite,
 			 &sample);
 			 assert (audioErr == noErr);
-			 */
+			 
 			
 			/*
 			 // saw wave
@@ -84,6 +81,7 @@ int main (int argc, const char * argv[]) {
 			 assert (audioErr == noErr);
 			 sampleCount++;
 			 */
+            /*
 			// sine wave
 			SInt16 sample = CFSwapInt16HostToBig ((SInt16) SHRT_MAX *
 												  sin (2 * M_PI * 
@@ -97,7 +95,7 @@ int main (int argc, const char * argv[]) {
 										   &sample);
 			assert (audioErr == noErr);
 			sampleCount++;
-			
+			*/
 			
 		}
 	}

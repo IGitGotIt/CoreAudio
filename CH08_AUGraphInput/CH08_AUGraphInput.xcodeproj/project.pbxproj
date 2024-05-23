@@ -13,8 +13,8 @@
 		01B17AD814A510A6000E5E07 /* CH08_AUGraphInput.1 in CopyFiles */ = {isa = PBXBuildFile; fileRef = 01B17AD714A510A6000E5E07 /* CH08_AUGraphInput.1 */; };
 		01B17AE014A510E1000E5E07 /* AudioToolbox.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 01B17ADE14A510E1000E5E07 /* AudioToolbox.framework */; };
 		01B17AE114A510E1000E5E07 /* AudioUnit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 01B17ADF14A510E1000E5E07 /* AudioUnit.framework */; };
-		01B17AED14A512E6000E5E07 /* CARingBuffer.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 01B17AEB14A512E6000E5E07 /* CARingBuffer.cpp */; };
 		01B17AF114A51437000E5E07 /* CoreAudio.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 01B17AF014A51437000E5E07 /* CoreAudio.framework */; };
+		A88801482BFEAC8000239DF7 /* CARingBuffer.cpp in Sources */ = {isa = PBXBuildFile; fileRef = A88801462BFEAC8000239DF7 /* CARingBuffer.cpp */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXCopyFilesBuildPhase section */
@@ -38,9 +38,13 @@
 		01B17AD714A510A6000E5E07 /* CH08_AUGraphInput.1 */ = {isa = PBXFileReference; lastKnownFileType = text.man; path = CH08_AUGraphInput.1; sourceTree = "<group>"; };
 		01B17ADE14A510E1000E5E07 /* AudioToolbox.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AudioToolbox.framework; path = SDKs/MacOSX10.6.sdk/System/Library/Frameworks/AudioToolbox.framework; sourceTree = DEVELOPER_DIR; };
 		01B17ADF14A510E1000E5E07 /* AudioUnit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AudioUnit.framework; path = SDKs/MacOSX10.6.sdk/System/Library/Frameworks/AudioUnit.framework; sourceTree = DEVELOPER_DIR; };
-		01B17AEB14A512E6000E5E07 /* CARingBuffer.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = CARingBuffer.cpp; path = /Library/Developer/CoreAudio/PublicUtility/CARingBuffer.cpp; sourceTree = "<absolute>"; };
-		01B17AEC14A512E6000E5E07 /* CARingBuffer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = CARingBuffer.h; path = /Developer/Extras/CoreAudio/PublicUtility/CARingBuffer.h; sourceTree = "<absolute>"; };
 		01B17AF014A51437000E5E07 /* CoreAudio.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreAudio.framework; path = SDKs/MacOSX10.6.sdk/System/Library/Frameworks/CoreAudio.framework; sourceTree = DEVELOPER_DIR; };
+		A88801452BFEAC5F00239DF7 /* CARingBuffer.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = CARingBuffer.h; sourceTree = "<group>"; };
+		A88801462BFEAC8000239DF7 /* CARingBuffer.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = CARingBuffer.cpp; sourceTree = "<group>"; };
+		A88801472BFEAC8000239DF7 /* CARingBuffer.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = CARingBuffer.hpp; sourceTree = "<group>"; };
+		A88801492BFEAD0300239DF7 /* CABitOperations.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = CABitOperations.h; sourceTree = "<group>"; };
+		A888014A2BFEAD4800239DF7 /* CAAutoDisposer.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = CAAutoDisposer.h; sourceTree = "<group>"; };
+		A888014B2BFEAD8000239DF7 /* CAAtomic.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = CAAtomic.h; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -94,6 +98,12 @@
 			children = (
 				01B17AD514A510A6000E5E07 /* main.cpp */,
 				01B17AD714A510A6000E5E07 /* CH08_AUGraphInput.1 */,
+				A88801452BFEAC5F00239DF7 /* CARingBuffer.h */,
+				A88801462BFEAC8000239DF7 /* CARingBuffer.cpp */,
+				A88801472BFEAC8000239DF7 /* CARingBuffer.hpp */,
+				A88801492BFEAD0300239DF7 /* CABitOperations.h */,
+				A888014A2BFEAD4800239DF7 /* CAAutoDisposer.h */,
+				A888014B2BFEAD8000239DF7 /* CAAtomic.h */,
 			);
 			path = CH08_AUGraphInput;
 			sourceTree = "<group>";
@@ -101,8 +111,6 @@
 		01B17AE214A510FE000E5E07 /* CA Public Utility */ = {
 			isa = PBXGroup;
 			children = (
-				01B17AEB14A512E6000E5E07 /* CARingBuffer.cpp */,
-				01B17AEC14A512E6000E5E07 /* CARingBuffer.h */,
 			);
 			name = "CA Public Utility";
 			sourceTree = "<group>";
@@ -141,6 +149,7 @@
 			developmentRegion = English;
 			hasScannedForEncodings = 0;
 			knownRegions = (
+				English,
 				en,
 			);
 			mainGroup = 01B17AC314A510A6000E5E07;
@@ -158,8 +167,8 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				A88801482BFEAC8000239DF7 /* CARingBuffer.cpp in Sources */,
 				01B17AD614A510A6000E5E07 /* main.cpp in Sources */,
-				01B17AED14A512E6000E5E07 /* CARingBuffer.cpp in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -215,8 +224,9 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ARCHS = "$(ARCHS_STANDARD_32_64_BIT)";
+				MACOSX_DEPLOYMENT_TARGET = 13.2;
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				SDKROOT = macosx10.7;
+				SDKROOT = macosx;
 			};
 			name = Debug;
 		};
@@ -224,8 +234,9 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ARCHS = "$(ARCHS_STANDARD_32_64_BIT)";
+				MACOSX_DEPLOYMENT_TARGET = 13.2;
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				SDKROOT = macosx10.7;
+				SDKROOT = macosx;
 			};
 			name = Release;
 		};

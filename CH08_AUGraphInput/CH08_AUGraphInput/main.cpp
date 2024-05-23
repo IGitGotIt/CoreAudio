@@ -4,6 +4,7 @@
 #include <pthread.h>
 
 //#define PART_II
+//#define RING_BUFFER
 
 typedef struct MyAUGraphPlayer
 {
@@ -106,10 +107,12 @@ OSStatus GraphRenderProc(void *inRefCon,
 			player->inToOutSampleTimeOffset = player->firstInputSampleTime - player->firstOutputSampleTime;
 		}
 	}
+    
 	
 	// copy samples out of ring buffer
 	OSStatus outputProcErr = noErr;
 	// new CARingBuffer doesn't take bool 4th arg
+    //jay
 	outputProcErr = player->ringBuffer->Fetch(ioData,
 											  inNumberFrames,
 											  inTimeStamp->mSampleTime + player->inToOutSampleTimeOffset);
@@ -194,7 +197,8 @@ void CreateInputUnit (MyAUGraphPlayer *player) {
 	
 	// AudioObjectProperty stuff new in 10.6, replaces AudioHardwareGetProperty() call
 	// TODO: need to update ch08 to explain, use this call. need CoreAudio.framework
-	AudioObjectPropertyAddress defaultDeviceProperty;
+
+    AudioObjectPropertyAddress defaultDeviceProperty;
 	defaultDeviceProperty.mSelector = kAudioHardwarePropertyDefaultInputDevice;
 	defaultDeviceProperty.mScope = kAudioObjectPropertyScopeGlobal;
 	defaultDeviceProperty.mElement = kAudioObjectPropertyElementMaster;
@@ -250,7 +254,7 @@ void CreateInputUnit (MyAUGraphPlayer *player) {
 									&player->streamFormat,
 									propertySize),
 			   "Couldn't set ASBD on input unit");
-	
+
 	/* allocate some buffers to hold samples between input and output callbacks
 	 (this part largely copied from CAPlayThrough) */
 	//Get the size of the IO buffer(s)
@@ -313,7 +317,7 @@ void CreateInputUnit (MyAUGraphPlayer *player) {
 									&callbackStruct, 
 									sizeof(callbackStruct)),
 			   "Couldn't set input callback");
-	
+
 	CheckError(AudioUnitInitialize(player->inputUnit),
 			   "Couldn't initialize input unit");
 	

@@ -80,6 +80,7 @@ void CreateAndConnectOutputUnit (MySineWavePlayer *player) {
 	AudioComponentDescription outputcd = {0}; // 10.6 version
 	outputcd.componentType = kAudioUnitType_Output;
 	outputcd.componentSubType = kAudioUnitSubType_DefaultOutput;
+  //  outputcd.componentSubType = kAudioUnitSubType_GenericOutput;
 	outputcd.componentManufacturer = kAudioUnitManufacturer_Apple;
 	
 	AudioComponent comp = AudioComponentFindNext (NULL, &outputcd);
