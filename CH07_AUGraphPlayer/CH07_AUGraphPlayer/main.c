@@ -5,6 +5,27 @@
 // #define kInputFileLocation	CFSTR("/Volumes/Galactica/Music/Dubee - its the crest.mp3")
 // #define kInputFileLocation CFSTR("/Volumes/Sephiroth/Tunes/Amazon MP3/Metric/Fantasies/06 - Gimme Sympathy.mp3")
 
+OSStatus OutputRenderProc(void *inRefCon,
+                            AudioUnitRenderActionFlags *ioActionFlags,
+                            const AudioTimeStamp *inTimeStamp,
+                            UInt32 inBusNumber,
+                            UInt32 inNumberFrames,
+                            AudioBufferList * ioData);
+
+#pragma mark - callback function -
+OSStatus OutputRenderProc(void *inRefCon,
+                            AudioUnitRenderActionFlags *ioActionFlags,
+                            const AudioTimeStamp *inTimeStamp,
+                            UInt32 inBusNumber,
+                            UInt32 inNumberFrames,
+                            AudioBufferList * ioData)
+{
+    printf("jay");
+    int x = 0;
+    x = x + 9;
+    return noErr;
+}
+
 typedef struct MyAUGraphPlayer
 {
 	AudioStreamBasicDescription inputFormat; // input file's data stream description
@@ -12,12 +33,13 @@ typedef struct MyAUGraphPlayer
 	
 	AUGraph graph;
 	AudioUnit fileAU;
+    AudioUnit outputAU;
 	
 } MyAUGraphPlayer;
 
 void CreateMyAUGraph(MyAUGraphPlayer *player);
 double PrepareFileAU(MyAUGraphPlayer *player);
-
+void CreateAndConnectOutputUnit (MyAUGraphPlayer *player) ;
 #pragma mark - utility functions -
 
 // generic error handler - if err is nonzero, prints error message and exits program.
@@ -42,17 +64,52 @@ static void CheckError(OSStatus error, const char *operation)
 
 
 #pragma mark - audio converter -
+void CreateAndConnectOutputUnit (MyAUGraphPlayer *player) {
+    
+    //  10.6 and later: generate description that will match out output device (speakers)
+    AudioComponentDescription outputcd = {0}; // 10.6 version
+    outputcd.componentType = kAudioUnitType_Output;
+    outputcd.componentSubType = kAudioUnitSubType_DefaultOutput;
+  //  outputcd.componentSubType = kAudioUnitSubType_GenericOutput;
+    outputcd.componentManufacturer = kAudioUnitManufacturer_Apple;
+    
+    AudioComponent comp = AudioComponentFindNext (NULL, &outputcd);
+    if (comp == NULL) {
+        printf ("can't get output unit");
+        exit (-1);
+    }
+    CheckError (AudioComponentInstanceNew(comp, &player->outputAU),
+                "Couldn't open component for outputUnit");
+    
+    // register render callback
+    AURenderCallbackStruct input;
+    input.inputProc = OutputRenderProc;
+    input.inputProcRefCon = player;
+    CheckError(AudioUnitSetProperty(player->outputAU,
+                                    kAudioUnitProperty_SetRenderCallback,
+                                    kAudioUnitScope_Input,
+                                    0,
+                                    &input,
+                                    sizeof(input)),
+               "AudioUnitSetProperty failed");
+        
+    // initialize unit
+    CheckError (AudioUnitInitialize(player->outputAU),
+                "Couldn't initialize output unit");
+    
+}
 
 void CreateMyAUGraph(MyAUGraphPlayer *player)
 {
 	// create a new AUGraph
 	CheckError(NewAUGraph(&player->graph),
 			   "NewAUGraph failed");
-	
+    
+  
 	// generate description that will match out output device (speakers)
 	AudioComponentDescription outputcd = {0};
 	outputcd.componentType = kAudioUnitType_Output;
-	outputcd.componentSubType = kAudioUnitSubType_DefaultOutput;
+    outputcd.componentSubType = kAudioUnitSubType_DefaultOutput;
 	outputcd.componentManufacturer = kAudioUnitManufacturer_Apple;
 	
 	// adds a node with above description to the graph
@@ -77,12 +134,30 @@ void CreateMyAUGraph(MyAUGraphPlayer *player)
 	
 	// get the reference to the AudioUnit object for the file player graph node
 	CheckError(AUGraphNodeInfo(player->graph, fileNode, NULL, &player->fileAU),
-			   "AUGraphNodeInfo failed");
-	
+			   "AUGraphNodeInfo failed for file AU");
+
+    // get the reference to the AudioUnit object for the file player graph node
+    CheckError(AUGraphNodeInfo(player->graph, outputNode, NULL, &player->outputAU),
+               "AUGraphNodeInfo failed for output node");
+    
+ 
+    
 	// connect the output source of the file player AU to the input source of the output node
 	CheckError(AUGraphConnectNodeInput(player->graph, fileNode, 0, outputNode, 0),
 			   "AUGraphConnectNodeInput");
 	
+    // register render callback
+    AURenderCallbackStruct output;
+    output.inputProc = OutputRenderProc;
+    output.inputProcRefCon = NULL;
+    CheckError(AudioUnitSetProperty(player->outputAU,
+                                    kAudioUnitProperty_SetRenderCallback,
+                                    kAudioUnitScope_Global,
+                                    0,
+                                    &output,
+                                    sizeof(output)),
+               "AudioUnitSetProperty kAudioUnitProperty_SetRenderCallback failed");
+    
 	// now initialize the graph (causes resources to be allocated)
 	CheckError(AUGraphInitialize(player->graph),
 			   "AUGraphInitialize failed");
